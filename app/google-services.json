@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "957003250558",
+    "project_id": "tempsapp-4949f",
+    "storage_bucket": "tempsapp-4949f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957003250558:android:b0a42874ef12644660512f",
+        "android_client_info": {
+          "package_name": "com.frannzg.tempsapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlGKMPj313COPtcW7byysvzLYu5W32qy4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
