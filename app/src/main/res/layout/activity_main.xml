@@ -5,42 +5,67 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- ImageView para mostrar el icono del clima -->
-    <ImageView
-        android:id="@+id/weatherIcon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:contentDescription="Icono del clima"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- TextView para mostrar la información del clima -->
+    <!-- Sección de Ubicación Actual -->
     <TextView
-        android:id="@+id/weatherTextView"
+        android:id="@+id/currentLocationTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cargando datos del clima..."
-        android:textSize="18sp"
-        android:paddingBottom="16dp" />
+        android:text="Clima en mi ubicación actual"
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"/>
 
+    <TextView
+        android:id="@+id/currentWeatherTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cargando datos de ubicación..."
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- ProgressBar para la sección de ubicación actual -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone" />
+        android:visibility="gone"/>
+
+    <!-- Sección de Búsqueda de Ciudad -->
+    <TextView
+        android:id="@+id/searchCityTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buscar clima por ciudad"
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/cityInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Introduce el nombre de la ciudad"
-        android:layout_marginTop="16dp" />
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/searchButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Buscar clima"
-        android:layout_marginTop="16dp" />
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/searchWeatherTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cargando datos..."
+        android:textSize="18sp" />
+
+    <!-- ProgressBar para la sección de búsqueda -->
+    <ProgressBar
+        android:id="@+id/searchProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
 </LinearLayout>

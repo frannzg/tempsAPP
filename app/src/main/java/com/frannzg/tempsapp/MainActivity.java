@@ -32,34 +32,43 @@ import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String API_KEY = "d8456d71b46efebe42d31d99f977cadc";
+    private static final String API_KEY = "47d956df6f27f12f28d3c273e7a6028b";
     private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
-    private TextView weatherTextView;
+    private TextView currentWeatherTextView, searchWeatherTextView;
     private EditText cityInput;
     private Button searchButton;
     private FusedLocationProviderClient fusedLocationClient;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        weatherTextView = findViewById(R.id.weatherTextView);
+        currentWeatherTextView = findViewById(R.id.currentWeatherTextView);
+        searchWeatherTextView = findViewById(R.id.searchWeatherTextView);
         cityInput = findViewById(R.id.cityInput);
         searchButton = findViewById(R.id.searchButton);
-        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Obtener localización al iniciar la app
-        getLocationAndFetchWeather(progressBar);
+        getLocationAndFetchWeather();
 
         // Buscar por nombre de ciudad
-        searchButton.setOnClickListener(v -> fetchWeatherByCity(cityInput.getText().toString(), progressBar));
+        searchButton.setOnClickListener(v -> {
+            String city = cityInput.getText().toString();
+            if (city.isEmpty()) {
+                searchWeatherTextView.setText("Por favor, introduce una ciudad.");
+            } else {
+                fetchWeatherByCity(city);
+            }
+        });
     }
 
     @SuppressLint("MissingPermission")
-    private void getLocationAndFetchWeather(ProgressBar progressBar) {
+    private void getLocationAndFetchWeather() {
         progressBar.setVisibility(View.VISIBLE); // Mostrar el ProgressBar mientras se carga
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -71,68 +80,33 @@ public class MainActivity extends AppCompatActivity {
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
-                fetchWeather(location.getLatitude(), location.getLongitude(), progressBar);
+                fetchWeather(location.getLatitude(), location.getLongitude());
             } else {
-                Toast.makeText(this, "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE); // Ocultar el ProgressBar si no se pudo obtener la ubicación
+                currentWeatherTextView.setText("No se pudo obtener la ubicación.");
+                progressBar.setVisibility(View.GONE);
             }
         }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Error al obtener ubicación: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE); // Ocultar el ProgressBar si hay un error
+            currentWeatherTextView.setText("Error al obtener ubicación.");
+            progressBar.setVisibility(View.GONE);
         });
     }
 
-    private void fetchWeather(double latitude, double longitude, ProgressBar progressBar) {
+    private void fetchWeather(double latitude, double longitude) {
         String url = BASE_URL + "?lat=" + latitude + "&lon=" + longitude +
                 "&units=metric&appid=" + API_KEY;
 
-        @SuppressLint("SetTextI18n") JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
-                        // Obtener datos del JSON
                         JSONObject main = response.getJSONObject("main");
                         double temp = main.getDouble("temp");
-                        double tempMin = main.getDouble("temp_min");
-                        double tempMax = main.getDouble("temp_max");
-                        int pressure = main.getInt("pressure");
-                        int humidity = main.getInt("humidity");
-
-                        String weatherMain = response.getJSONArray("weather")
-                                .getJSONObject(0)
-                                .getString("main");
-                        String weatherDescription = response.getJSONArray("weather")
-                                .getJSONObject(0)
-                                .getString("description");
-
                         String cityName = response.getString("name");
                         String country = response.getJSONObject("sys").getString("country");
 
-                        // Obtener el código del icono
-                        String iconCode = response.getJSONArray("weather")
-                                .getJSONObject(0)
-                                .getString("icon");
-
-                        // Construir la URL del icono
-                        String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
-                        Log.d("Icon URL", iconUrl); // Para depurar la URL del icono
-
-                        // Mostrar el icono con Glide
-                        ImageView weatherIcon = findViewById(R.id.weatherIcon);
-                        Glide.with(MainActivity.this)
-                                .load(iconUrl)
-                                .into(weatherIcon);
-
-                        // Guardar la ciudad para notificaciones
-                        saveCityForNotifications(cityName);
-
-                        // Mostrar los datos
-                        weatherTextView.setText(
+                        // Mostrar datos de la ubicación actual
+                        currentWeatherTextView.setText(
                                 "Ciudad: " + cityName + ", " + country + "\n" +
-                                        "Clima: " + weatherMain + " (" + weatherDescription + ")\n" +
-                                        "Temp: " + temp + "°C\n" +
-                                        "Mínima: " + tempMin + "°C | Máxima: " + tempMax + "°C\n" +
-                                        "Presión: " + pressure + " hPa\n" +
-                                        "Humedad: " + humidity + "%"
+                                        "Temp: " + temp + "°C"
                         );
 
                     } catch (Exception e) {
@@ -143,93 +117,45 @@ public class MainActivity extends AppCompatActivity {
                     }
                 },
                 error -> {
-                    Toast.makeText(this, "Error al obtener el clima", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE); // Ocultar el ProgressBar si hay un error
+                    currentWeatherTextView.setText("Error al obtener el clima.");
+                    progressBar.setVisibility(View.GONE);
                 });
 
         Volley.newRequestQueue(this).add(request);
     }
 
-    private void fetchWeatherByCity(String city, ProgressBar progressBar) {
-        if (city.isEmpty()) {
-            Toast.makeText(this, "Introduce una ciudad", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private void fetchWeatherByCity(String city) {
+        progressBar.setVisibility(View.VISIBLE);
 
         String url = BASE_URL + "?q=" + city + "&units=metric&appid=" + API_KEY;
 
-        @SuppressLint("SetTextI18n") JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
-                        // Obtener datos del JSON
                         JSONObject main = response.getJSONObject("main");
                         double temp = main.getDouble("temp");
-                        double tempMin = main.getDouble("temp_min");
-                        double tempMax = main.getDouble("temp_max");
-                        int pressure = main.getInt("pressure");
-                        int humidity = main.getInt("humidity");
-
-                        String weatherMain = response.getJSONArray("weather")
-                                .getJSONObject(0)
-                                .getString("main");
-                        String weatherDescription = response.getJSONArray("weather")
-                                .getJSONObject(0)
-                                .getString("description");
-
                         String cityName = response.getString("name");
                         String country = response.getJSONObject("sys").getString("country");
 
-                        // Obtener el código del icono
-                        String iconCode = response.getJSONArray("weather")
-                                .getJSONObject(0)
-                                .getString("icon");
-
-                        // Construir la URL del icono
-                        String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
-
-                        // Mostrar el icono con Glide
-                        ImageView weatherIcon = findViewById(R.id.weatherIcon);
-                        Glide.with(MainActivity.this)
-                                .load(iconUrl)
-                                .into(weatherIcon);
-
-                        // Mostrar los datos
-                        weatherTextView.setText(
+                        // Mostrar datos de la ciudad buscada
+                        searchWeatherTextView.setText(
                                 "Ciudad: " + cityName + ", " + country + "\n" +
-                                        "Clima: " + weatherMain + " (" + weatherDescription + ")\n" +
-                                        "Tiempo: " + temp + "°C\n" +
-                                        "Mínima: " + tempMin + "°C | Máxima: " + tempMax + "°C\n" +
-                                        "Presión: " + pressure + " hPa\n" +
-                                        "Humedad: " + humidity + "%"
+                                        "Temp: " + temp + "°C"
                         );
 
                     } catch (Exception e) {
-                        Log.e("MainActivity", "Error al procesar los datos", e);
+                        e.printStackTrace();
                         Toast.makeText(MainActivity.this, "Error al procesar los datos", Toast.LENGTH_SHORT).show();
                     } finally {
-                        progressBar.setVisibility(View.GONE); // Ocultar el ProgressBar después de cargar los datos
+                        progressBar.setVisibility(View.GONE);
                     }
                 },
                 error -> {
-                    Toast.makeText(this, "Error: Ciudad no encontrada", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE); // Ocultar el ProgressBar si hay un error
+                    searchWeatherTextView.setText("Ciudad no encontrada.");
+                    progressBar.setVisibility(View.GONE);
                 });
 
         Volley.newRequestQueue(this).add(request);
     }
-
-    private void saveCityForNotifications(String city) {
-        SharedPreferences sharedPreferences = getSharedPreferences("cities", MODE_PRIVATE);
-        sharedPreferences.edit().putString("last_city", city).apply();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            getLocationAndFetchWeather(findViewById(R.id.progressBar));
-        } else {
-            Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
-        }
-    }
 }
+
