@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/currentLocationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Clima en mi ubicación actual"
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center" />
+
+    <!-- Información del clima -->
+    <TextView
+        android:id="@+id/currentWeatherTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cargando datos de ubicación..."
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Indicador de carga -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+</LinearLayout>

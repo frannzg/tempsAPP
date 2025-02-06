@@ -5,67 +5,17 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Sección de Ubicación Actual -->
-    <TextView
-        android:id="@+id/currentLocationTitle"
+    <Button
+        android:id="@+id/currentWeatherButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Clima en mi ubicación actual"
-        android:textSize="20sp"
-        android:layout_marginBottom="8dp"/>
+        android:text="Ver clima actual" />
 
-    <TextView
-        android:id="@+id/currentWeatherTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cargando datos de ubicación..."
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- ProgressBar para la sección de ubicación actual -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
-
-    <!-- Sección de Búsqueda de Ciudad -->
-    <TextView
-        android:id="@+id/searchCityTitle"
+    <Button
+        android:id="@+id/searchWeatherButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Buscar clima por ciudad"
-        android:textSize="20sp"
-        android:layout_marginBottom="8dp"/>
-
-    <EditText
-        android:id="@+id/cityInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Introduce el nombre de la ciudad"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Buscar clima"
-        android:layout_marginBottom="16dp"/>
-
-    <TextView
-        android:id="@+id/searchWeatherTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cargando datos..."
-        android:textSize="18sp" />
-
-    <!-- ProgressBar para la sección de búsqueda -->
-    <ProgressBar
-        android:id="@+id/searchProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>
