@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -30,9 +32,11 @@ public class CurrentWeatherActivity extends AppCompatActivity {
 
     private static final String API_KEY = "47d956df6f27f12f28d3c273e7a6028b";
     private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+    private static final String ICON_URL = "https://openweathermap.org/img/wn/";
 
     private TextView currentWeatherTextView;
     private ProgressBar progressBar;
+    private ImageView weatherIcon;
     private FusedLocationProviderClient fusedLocationClient;
 
     @Override
@@ -42,10 +46,10 @@ public class CurrentWeatherActivity extends AppCompatActivity {
 
         currentWeatherTextView = findViewById(R.id.currentWeatherTextView);
         progressBar = findViewById(R.id.progressBar);
+        weatherIcon = findViewById(R.id.weatherIcon);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // Verificar permisos y obtener el clima
         getLocationAndFetchWeather();
     }
 
@@ -115,14 +119,29 @@ public class CurrentWeatherActivity extends AppCompatActivity {
                         String cityName = response.getString("name");
                         String country = response.getJSONObject("sys").getString("country");
 
+                        String icon = response.getJSONArray("weather")
+                                .getJSONObject(0)
+                                .getString("icon");
+
+                        String weatherDescription = response.getJSONArray("weather")
+                                .getJSONObject(0)
+                                .getString("description");
+
                         currentWeatherTextView.setText(
                                 "Ciudad: " + cityName + ", " + country + "\n" +
+                                        "Descripción: " + weatherDescription + "\n" +
                                         "Temperatura: " + temp + "°C\n" +
-                                        "Sensación Térmica: " + feelsLike + "°C\n" +
-                                        "Mínima: " + tempMin + "°C, Máxima: " + tempMax + "°C\n" +
+                                        "Sensación térmica: " + feelsLike + "°C\n" +
+                                        "Temp. mínima: " + tempMin + "°C\n" +
+                                        "Temp. máxima: " + tempMax + "°C\n" +
                                         "Presión: " + pressure + " hPa\n" +
                                         "Humedad: " + humidity + "%"
                         );
+
+                        Glide.with(this)
+                                .load(ICON_URL + icon + "@2x.png")
+                                .into(weatherIcon);
+
                     } catch (Exception e) {
                         Toast.makeText(this, "Error al procesar los datos del clima.", Toast.LENGTH_SHORT).show();
                     } finally {
