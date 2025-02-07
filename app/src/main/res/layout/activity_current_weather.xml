@@ -1,8 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#F23939">
 
     <TextView
         android:id="@+id/currentLocationTitle"
@@ -10,8 +13,9 @@
         android:layout_height="wrap_content"
         android:text="Clima en mi ubicación actual"
         android:textSize="20sp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center" />
+        android:textColor="#FBFBFB"
+    android:layout_marginBottom="8dp"
+    android:gravity="center" />
 
     <ImageView
         android:id="@+id/weatherIcon"
@@ -27,7 +31,8 @@
         android:layout_height="wrap_content"
         android:text="Cargando datos de ubicación..."
         android:textSize="18sp"
-        android:layout_marginBottom="16dp" />
+        android:textColor="#FBFBFB"
+    android:layout_marginBottom="16dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
