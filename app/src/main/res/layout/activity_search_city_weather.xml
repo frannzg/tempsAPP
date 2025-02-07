@@ -5,53 +5,43 @@
     android:orientation="vertical"
     android:padding="24dp"
     android:gravity="center"
-    android:background="#F23939">
+    android:background="@color/colorFONDOAPP">
 
-
+    <!-- Título -->
     <TextView
         android:id="@+id/searchCityTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Buscar clima por ciudad"
-        android:textSize="20sp"
+        android:text="Buscar clima por localidades"
+        android:textSize="30sp"
         android:textColor="#FBFBFB"
-    android:layout_marginBottom="8dp"
-    android:gravity="center" />
+        android:layout_marginBottom="16dp"
+        android:gravity="center" />
 
-
+    <!-- Entrada de texto para la ciudad -->
     <EditText
         android:id="@+id/cityInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Introduce el nombre de la ciudad"
-    android:textColor="#FBFBFB"
-    android:background="@android:color/transparent"
-    android:padding="12dp"
-    android:layout_marginBottom="16dp" />
+        android:hint="Introduce el nombre de la localidades"
+        android:textColor="#FBFBFB"
+        android:textColorHint="#BFBFBF"
+        android:background="@android:color/transparent"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp" />
 
-
+    <!-- Botón para buscar -->
     <Button
         android:id="@+id/searchButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FBFBFB"
-    android:text="Buscar clima"
-    android:textColor="#FFFFFF"
-    android:textSize="18sp"
-    android:padding="12dp"
-    android:layout_marginBottom="16dp" />
-
-
-    <TextView
-        android:id="@+id/searchWeatherTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
+        style="@style/CustomButton"
+        android:text="Buscar clima"
         android:textSize="18sp"
-        android:textColor="#FBFBFB"
-    android:layout_marginBottom="16dp" />
+        android:padding="12dp"
+        android:layout_marginBottom="16dp" />
 
-
+    <!-- Icono del clima -->
     <ImageView
         android:id="@+id/weatherIcon"
         android:layout_width="200dp"
@@ -60,7 +50,18 @@
         android:scaleType="fitCenter"
         android:layout_marginBottom="16dp" />
 
+    <!-- Descripción del clima -->
+    <TextView
+        android:id="@+id/searchWeatherTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:textColor="#FBFBFB"
+        android:layout_marginBottom="16dp"
+        android:gravity="center" />
 
+    <!-- Barra de progreso -->
     <ProgressBar
         android:id="@+id/searchProgressBar"
         android:layout_width="wrap_content"

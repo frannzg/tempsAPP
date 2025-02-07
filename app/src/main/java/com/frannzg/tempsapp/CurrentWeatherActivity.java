@@ -123,13 +123,8 @@ public class CurrentWeatherActivity extends AppCompatActivity {
                                 .getJSONObject(0)
                                 .getString("icon");
 
-                        String weatherDescription = response.getJSONArray("weather")
-                                .getJSONObject(0)
-                                .getString("description");
-
                         currentWeatherTextView.setText(
                                 "Ciudad: " + cityName + ", " + country + "\n" +
-                                        "Descripción: " + weatherDescription + "\n" +
                                         "Temperatura: " + temp + "°C\n" +
                                         "Sensación térmica: " + feelsLike + "°C\n" +
                                         "Temp. mínima: " + tempMin + "°C\n" +

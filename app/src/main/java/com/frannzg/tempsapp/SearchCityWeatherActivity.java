@@ -79,14 +79,9 @@ public class SearchCityWeatherActivity extends AppCompatActivity {
                                 .getJSONObject(0)
                                 .getString("icon");
 
-                        String weatherDescription = response.getJSONArray("weather")
-                                .getJSONObject(0)
-                                .getString("description");
-
-                        // Actualizar vista con los datos
+                        // Actualizar vista con los datos (sin descripción)
                         searchWeatherTextView.setText(
                                 "Ciudad: " + cityName + ", " + country + "\n" +
-                                        "Descripción: " + weatherDescription + "\n" +
                                         "Temperatura: " + temp + "°C\n" +
                                         "Sensación térmica: " + feelsLike + "°C\n" +
                                         "Temp. mínima: " + tempMin + "°C\n" +

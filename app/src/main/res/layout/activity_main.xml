@@ -6,28 +6,49 @@
     android:orientation="vertical"
     android:padding="24dp"
     android:gravity="center"
-    android:background="#F23939"
-    tools:ignore="ExtraText"> <!-- Fondo negro -->
+    android:background="@color/colorFONDOAPP"
+    tools:ignore="ExtraText">
+
+    <!-- Título de la app -->
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TempsAPP"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#FBFBFB"
+        android:layout_marginBottom="16dp"
+        android:gravity="center" />
+
+    <!-- Logo de la app -->
+    <ImageView
+        android:id="@+id/appLogo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/icon"
+    android:contentDescription="Logo de la aplicación"
+    android:layout_marginBottom="48dp" />
 
     <!-- Botón para clima actual -->
     <Button
         android:id="@+id/currentWeatherButton"
+        style="@style/CustomButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ver clima actual"
-        android:textColor="#FBFBFB"
-    android:textSize="18sp"
-    android:layout_marginBottom="16dp"
-    android:padding="12dp" />
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        android:text="Clima local"
+        android:textSize="20sp" />
 
     <!-- Botón para buscar clima por ciudad -->
     <Button
         android:id="@+id/searchWeatherButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Buscar clima por ciudad"
-        android:textColor="#FFFFFF"
-    android:textSize="18sp"
-    android:padding="12dp" />
+        style="@style/CustomButton"
+        android:text="Buscar por localidades"
+        android:textSize="20sp"
+        android:padding="12dp" />
 
 </LinearLayout>
